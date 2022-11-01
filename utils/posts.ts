@@ -1,5 +1,6 @@
 import { extract } from "$std/encoding/front_matter.ts";
 import { join } from "$std/path/posix.ts";
+import { walk } from "https://deno.land/std@0.161.0/fs/walk.ts";
 
 const DIRECTORY = "./posts";
 
@@ -13,6 +14,8 @@ export interface Post {
 
 export async function getPosts(): Promise<Post[]> {
   const files = Deno.readDir(DIRECTORY);
+  const deadcode = walk(DIRECTORY, { exts: [".md"] });
+  console.log(deadcode);
   const promises = [];
   for await (const file of files) {
     const slug = file.name.replace(".md", "");
